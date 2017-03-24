@@ -8,9 +8,9 @@ def getinfo(location,url):
     try:
         f=urllib2.urlopen(url)
     except urllib2.URLError:
-        pass
+        print('urlerror')
     except urllib2.socket.timeout:
-        pass
+        print('timeout')
 
     data = f.read()
     #for k, v in f.getheaders():
@@ -26,9 +26,11 @@ def getinfo(location,url):
             #print(newtitle)
             filename=newtitle+'-'+newurl.split('/')[-1]
             #file=urllib2.urlopen(newurl)
-            urllib2.urlretrieve(newurl,location+filename)
-            要加上重复的文件不反复重写
-            print('Get File:'+filename)
+            if not os.path.isfile(location+filename):
+                urllib2.urlretrieve(newurl,location+filename)
+                print('Get File:'+filename)
+            else:
+                print('File %s already exists'%filename)
         else:
             #print('html')
             foldername=newtitle
